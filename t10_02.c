@@ -1,7 +1,6 @@
 // 12S23018 - Early Sembiring
 // 12S23027 - Amos Manurung
 
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -18,7 +17,7 @@ int main(int _argc, char **_argv)
     unsigned short totalStudent = 0;
     char line[_SIZE];
     char* token;
-    char* delim = "#"; 
+    char* delim = "#";
 
     FILE *reader = fopen("./storage/dorm-repository.txt","r");
     while ( fgets(line, _SIZE, reader) != NULL ) {
@@ -202,7 +201,7 @@ int main(int _argc, char **_argv)
             }
         }
     }
- 
+
 
     return 0;
 }
