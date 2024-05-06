@@ -10,7 +10,7 @@
 #include "./libs/repository.h"
 #define _SIZE 255
 
-int main(int _argc, char **_argv)
+int main(int _argc, char **_argv) 
 {
     Dorm *dorms = (Dorm*) malloc(1 * sizeof(Dorm));
     Student *students = (Student*) malloc(1 * sizeof(Student));

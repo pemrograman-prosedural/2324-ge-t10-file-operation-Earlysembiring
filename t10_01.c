@@ -12,7 +12,7 @@
 int main(int _argc, char **_argv)
 {
     Dorm *dorms = (Dorm*) malloc(1 * sizeof(Dorm));
-    Student *students = (Student*) malloc(1 * sizeof(Student));
+    Student *students = (Student*) malloc(1 * sizeof(Student)); 
     unsigned short totalDorm = 0;
     unsigned short totalStudent = 0;
     char line[_SIZE];
