@@ -30,7 +30,7 @@ int main(int _argc, char **_argv)
         if ( strcmp(gender, "male") == 0 )
             dorms[totalDorm] = create_dorm(name, capacity, GENDER_MALE);
         else if ( strcmp(gender, "female") == 0 )
-            dorms[totalDorm] = create_dorm(name, capacity, GENDER_FEMALE);
+            dorms[totalDorm] = create_dorm(name, capacity, GENDER_FEMALE); 
         totalDorm++;
     }
 

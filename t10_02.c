@@ -162,7 +162,7 @@ int main(int _argc, char **_argv)
                 short dormIdx = findDormIdx(dorm_name, dorms, totalDorm);
 
                 if ( studentIdx>=0 && dormIdx>=0 ) {
-                    assign(&students[studentIdx], &dorms[dormIdx]);
+                    assign(&students[studentIdx], &dorms[dormIdx]); 
                 }
             }
 
