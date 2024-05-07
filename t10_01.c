@@ -1,13 +1,13 @@
 //  12S23018 - Early sembiring
 // 12S23027 - Amos manurung 
- 
-#include <stdio.h>
+
+#include <stdio.h> 
 #include <string.h>
 #include <stdlib.h>
 #include "./libs/dorm.h"
 #include "./libs/student.h"
 #include "./libs/repository.h"
-#define _SIZE 255 
+#define _SIZE 255
 
 int main(int _argc, char **_argv)
 {
@@ -30,7 +30,7 @@ int main(int _argc, char **_argv)
         if ( strcmp(gender, "male") == 0 )
             dorms[totalDorm] = create_dorm(name, capacity, GENDER_MALE);
         else if ( strcmp(gender, "female") == 0 )
-            dorms[totalDorm] = create_dorm(name, capacity, GENDER_FEMALE); 
+            dorms[totalDorm] = create_dorm(name, capacity, GENDER_FEMALE);
         totalDorm++;
     }
 

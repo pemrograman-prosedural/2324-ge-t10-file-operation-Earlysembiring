@@ -7,7 +7,7 @@
 #include "./libs/dorm.h"
 #include "./libs/student.h"
 #include "./libs/repository.h"
-#define _SIZE 255
+#define _SIZE 255 
 
 int main(int _argc, char **_argv)
 {
