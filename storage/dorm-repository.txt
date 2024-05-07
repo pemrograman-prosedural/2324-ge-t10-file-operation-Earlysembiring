@@ -5,3 +5,5 @@ Mahanaim|5|male
 Nazaret|5|male
 Pniel|20|female| 
 Kapernaum|20|male| 
+Pniel|20|female|
+Kapernaum|20|male|
