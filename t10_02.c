@@ -143,7 +143,7 @@ int main(int _argc, char **_argv)
                     dorms[totalDorm] = 
                         create_dorm(_name, _capacity, GENDER_FEMALE);
                     totalDorm++; success++;
-                }
+                } 
 
                 if (success == 1) {
                     FILE* writer = fopen("./storage/dorm-repository.txt","a");

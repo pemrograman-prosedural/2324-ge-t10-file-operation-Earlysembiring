@@ -1,6 +1,6 @@
 //  12S23018 - Early sembiring
 // 12S23027 - Amos manurung 
-
+ 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
