@@ -7,3 +7,4 @@ Pniel|20|female|
 Kapernaum|20|male| 
 Pniel|20|female|
 Kapernaum|20|male|
+ 

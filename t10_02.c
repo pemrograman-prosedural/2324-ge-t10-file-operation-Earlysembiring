@@ -18,7 +18,7 @@ int main(int _argc, char **_argv)
     char line[_SIZE];
     char* token;
     char* delim = "#"; 
-
+ 
     FILE *reader = fopen("./storage/dorm-repository.txt","r");
     while ( fgets(line, _SIZE, reader) != NULL ) {
         line[strcspn(line, "\r\n")] = 0;
