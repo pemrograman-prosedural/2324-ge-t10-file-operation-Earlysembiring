@@ -145,7 +145,7 @@ int main(int _argc, char **_argv)
                     totalDorm++; success++;
                 } 
 
-                if (success == 1) {
+                if (success == 1) { 
                     FILE* writer = fopen("./storage/dorm-repository.txt","a");
                     fputs(_name,writer);    fputs("|",writer);
                     fputs(capacity,writer); fputs("|",writer);
