@@ -1,5 +1,9 @@
+#include "dorm.h"
+#include "gender.h"
 #include "student.h"
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 /**
@@ -8,105 +12,32 @@
  *
  */
 
-Student create_student ( char *_id, char *_name, char *_year, gender_t _gender )
-{
-    Student student_; 
+Student new_student(const char *id, const char *name, unsigned short cohort, Gender gender, Dorm *dorm) {
+	Student student;
 
-    strcpy( student_.id, _id );
-    strcpy( student_.name, _name );
-    strcpy( student_.year, _year );
-    student_.gender = _gender;
-    student_.dorm   = NULL;
+	strncpy(student.id, id, sizeof(student.id) - 1);
+	student.id[sizeof(student.id) - 1] = '\0';
 
-    return student_;
+	strncpy(student.name, name, sizeof(student.name) - 1);
+	student.name[sizeof(student.name) - 1] = '\0';
+
+	student.cohort = cohort;
+	student.gender = gender;
+	student.dorm = NULL;
+
+	return student;
 }
 
-void printStudent ( Student student_to_print )
-{
-    if ( strcmp(student_to_print.name, "") != 0 ) {
-        printf( "%s|%s|%s", student_to_print.id,
-                            student_to_print.name,
-                            student_to_print.year );
-
-        switch ( student_to_print.gender )
-        {
-            case GENDER_MALE:
-                puts("|male");
-                break;
-            
-            case GENDER_FEMALE:
-                puts("|female");
-                break;
-        }
-    }
-    fflush(stdout);
+void print_student(const Student *student) {
+	printf("%s|%s|%hu|%s\n", student->id, student->name, student->cohort, gender_tostr(student->gender));
 }
 
-short findStudentIdx ( char *_id, Student *list, int length ) {
-    for ( short i=0; i<length; i++ ) {
-        if ( strcmp(list[i].id, _id) == 0 )
-            return i;
-    }
-
-    return -1;
-}
-
-void assign ( Student *student_, Dorm *dorm_ )
-{
-    if ( student_->gender == dorm_->gender && dorm_->residents_num < dorm_->capacity )
-    {
-        student_->dorm = dorm_;
-        dorm_->residents_num++;
-    }
-    else {
-        student_->dorm = NULL;
-    }
-}
-
-void unassign ( Student *student_, Dorm* dorm_ )
-{
-    if ( student_->dorm == dorm_ ) {
-        student_->dorm = NULL;
-        dorm_->residents_num--;
-    }
-}
-
-void moveStudent ( Student *migrant, Dorm *newResidence , Dorm *oldResidence )
-{
-    if ( migrant->dorm != NULL ) {
-        unassign ( migrant, oldResidence );
-    }
-    assign ( migrant, newResidence );
-}
-
-void printStudentDetails ( Student student_to_print )
-{
-    if ( strcmp(student_to_print.name, "") != 0 ) {
-        printf( "%s|%s|%s", student_to_print.id,
-                            student_to_print.name,
-                            student_to_print.year );
-
-        switch ( student_to_print.gender ) {
-            case GENDER_MALE:
-                ( student_to_print.dorm != NULL ) ?
-                    printf("|male|%s\n", student_to_print.dorm->name) : printf("|male|unassigned\n");
-                break;
-            
-            case GENDER_FEMALE:
-                ( student_to_print.dorm != NULL ) ?
-                    printf("|female|%s\n", student_to_print.dorm->name) : printf("|female|unassigned\n");
-                break;
-        }
-    }
-    fflush( stdout );
-}
-
-void emptyDorm ( Dorm* residence, Student** potentialResidents, unsigned short totalPR )
-{
-    for (size_t i=0; i<totalPR; i++) {
-        if (potentialResidents[i]->dorm != NULL) {
-            if (potentialResidents[i]->dorm == residence)
-                unassign(potentialResidents[i], residence);
-        }
-    }
+void print_student_detailed(const Student *student) {
+	printf("%s|%s|%hu|%s|", student->id, student->name, student->cohort, gender_tostr(student->gender));
+    
+	if (student->dorm) {
+		printf("%s\n", student->dorm->name);
+	} else {
+		puts("unassigned");
+	}
 }

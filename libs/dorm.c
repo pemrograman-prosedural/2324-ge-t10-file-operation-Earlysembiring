@@ -1,6 +1,8 @@
 #include "dorm.h"
+#include "gender.h"
+
 #include <stdio.h>
-#include <string.h> 
+#include <string.h>
 
 /**
  * @brief Define the complete function definition here. Be sure to enlist the prototype of each function
@@ -8,47 +10,23 @@
  *
  */
 
-Dorm create_dorm ( char *_name, unsigned short _capacity, gender_t _gender )
-{
-    Dorm dorm_;
+Dorm new_dorm(const char *name, unsigned short capacity, const char *gender_str) {
+	Dorm dorm;
 
-    dorm_.residents_num = 0;
-    strcpy( dorm_.name, _name );
-    dorm_.capacity = _capacity;
-    dorm_.gender   = _gender;
+	strncpy(dorm.name, name, sizeof(dorm.name) - 1);
+	dorm.name[sizeof(dorm.name) - 1] = '\0';
 
-    return dorm_;
+	dorm.capacity = capacity;
+	dorm.gender = strto_gender(gender_str);
+	dorm.num_residents = 0;
+
+	return dorm;
 }
 
-void print_dorm ( Dorm dorm_to_print )
-{
-    printf( "%s", dorm_to_print.name );
-
-    ( dorm_to_print.gender == GENDER_MALE )?
-        printf( "|%d|male\n", dorm_to_print.capacity ):
-        printf( "|%d|female\n", dorm_to_print.capacity );
-
-    fflush( stdout );    
+void print_dorm(const Dorm *dorm) {
+	printf("%s|%hu|%s\n", dorm->name, dorm->capacity, gender_tostr(dorm->gender));
 }
 
-void printDormDetails ( Dorm dorm_to_print )
-{
-    printf( "%s|%d", dorm_to_print.name, dorm_to_print.capacity );
-
-    ( dorm_to_print.gender == GENDER_MALE )?
-        printf( "|male" ) : printf( "|female" );
-    
-    printf( "|%d\n", dorm_to_print.residents_num );
-
-    fflush( stdout );  
-}
-
-short findDormIdx ( char* _name, Dorm *list, int length )
-{
-    for ( short i=0; i<length; i++ ) {
-        if ( strcmp( list[i].name, _name ) == 0 )
-            return i;
-    }
-
-    return -1;
+void print_dorm_detailed(const Dorm *dorm) {
+	printf("%s|%hu|%s|%hu\n", dorm->name, dorm->capacity, gender_tostr(dorm->gender), dorm->num_residents);
 }

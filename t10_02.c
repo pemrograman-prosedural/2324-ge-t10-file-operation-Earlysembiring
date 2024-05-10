@@ -4,7 +4,7 @@
 #include "./libs/repository.h"
 
 #include <stdio.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <string.h>
 #define SIZE 256
 #define DELIMITER "#"

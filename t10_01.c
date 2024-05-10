@@ -1,11 +1,11 @@
-//  12S23018 - Early sembiring
-// 12S23027 - Amos manurung 
+// 12S23018 - Early Sembiring
+// 12S23027 - Amos Manurung
 
 #include "./libs/repository.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> 
+#include <string.h>
 #define SIZE 256
 #define DELIMITER "#"
 
