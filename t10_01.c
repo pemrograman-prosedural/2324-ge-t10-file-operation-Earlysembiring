@@ -1,192 +1,110 @@
 //  12S23018 - Early sembiring
 // 12S23027 - Amos manurung 
 
-#include <stdio.h> 
-#include <string.h>
-#include <stdlib.h>
-#include "./libs/dorm.h"
-#include "./libs/student.h"
 #include "./libs/repository.h"
-#define _SIZE 255
 
-int main(int _argc, char **_argv)
-{
-    Dorm *dorms = (Dorm*) malloc(1 * sizeof(Dorm));
-    Student *students = (Student*) malloc(1 * sizeof(Student));
-    unsigned short totalDorm = 0;
-    unsigned short totalStudent = 0;
-    char line[_SIZE];
-    char* token;
-    char* delim = "#";
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define SIZE 256
+#define DELIMITER "#"
 
-    FILE *reader = fopen("./storage/dorm-repository.txt","r");
-    while ( fgets(line, _SIZE, reader) != NULL ) {
-        line[strcspn(line, "\r\n")] = 0;
-        token = strtok(line,"|"); char* name = token;
-        token = strtok(NULL,"|"); unsigned short capacity = atoi(token);
-        token = strtok(NULL,"|"); char* gender = token;
+void sanitize(char *str);
+void process_query(char *query, Repository *repo);
 
-        dorms = (Dorm*) realloc(dorms, (totalDorm+1) * sizeof(Dorm));
-        if ( strcmp(gender, "male") == 0 )
-            dorms[totalDorm] = create_dorm(name, capacity, GENDER_MALE);
-        else if ( strcmp(gender, "female") == 0 )
-            dorms[totalDorm] = create_dorm(name, capacity, GENDER_FEMALE);
-        totalDorm++;
-    }
+int main(void) {
+	
+	Repository *repo = malloc(sizeof(Repository));
+	if (!repo) {
+		perror("Failed to allocate memory for repository");
+		return EXIT_FAILURE;
+	}
 
-    reader = fopen("./storage/student-repository.txt","r");
-    while ( fgets(line, _SIZE, reader) != NULL )
-    {
-        line[strcspn(line, "\r\n")] = 0;
-        token = strtok(line,"|"); char* id = token;
-        token = strtok(NULL,"|"); char* name = token;
-        token = strtok(NULL,"|"); char* year = token;
-        token = strtok(NULL,"|"); char* gender = token;
+	init_repo(repo);
+	load_dorms(repo, "./storage/dorm-repository.txt");
+	load_students(repo, "./storage/student-repository.txt");
 
-        students = (Student*) realloc(students, (totalStudent+1) * sizeof(Student));
-        if ( strcmp(gender, "male") == 0 )
-            students[totalStudent] = create_student(id, name, year, GENDER_MALE);
-        else if ( strcmp(gender, "female") == 0 )
-            students[totalStudent] = create_student(id, name, year, GENDER_FEMALE);
-        totalStudent++;
-    }
+	char query[SIZE];
+	while (fgets(query, SIZE, stdin)) {
+		sanitize(query);
+		process_query(query, repo);  
+	}
 
-    fclose(reader);
+	destroy_repo(repo);
 
-/* -------------------------- INTERACTIVE -------------------------- */
+	return 0;
+}
 
-    while ( 1 ) {
-        line[0] = '\0';
-        fgets(line, 255, stdin);
-        fflush(stdin);
-        
-        /* declared in scope level --> temporary
-           but the result remains */
-        {
-            int len = strlen(line);
-            for (short a = 0; a < len; a++) {
-                if(line[a] == '\r' || line[a] == '\n') {
-                    for(short b = a; b < len; b++) { line[b] = line[b + 1]; }
-                    len--;
-                    a--;
-                }
-            }
-        }
+void sanitize(char *str) {
+	if (str) {
+		str[strcspn(str, "\n")] = 0;
+	}
+}
 
-        if ( strcmp(line, "---") == 0 ) break;
+void process_query(char *query, Repository *repo) {
+	char* command = strtok(query, DELIMITER);
+	if (!command) return;
 
-        else if ( strcmp(line, "student-print-all") == 0 ) {
-            for (short i=0; i<totalStudent; i++) {
-                printStudent(students[i]);
-            }
-        }
+	if (strcmp(command, "---") == 0) {
+		exit(0);
+	}
 
-        else if ( strcmp(line, "dorm-print-all") == 0 ) {
-            for (short i=0; i<totalDorm; i++) {
-                print_dorm(dorms[i]);
-            }
-        }
+	if (strcmp(command, "dorm-print-all") == 0) {
+		print_dorms(repo->dorms, repo->num_dorms);
+		return;
+	}
+	
+	if (strcmp(command, "student-print-all") == 0) {
+		print_students(repo->students, repo->num_students);
+		return;
+	}
 
-        else if ( strcmp(line, "student-print-all-detail") == 0 ) {
-            for (short i=0; i<totalStudent; i++) {
-                printStudentDetails(students[i]);
-            }
-            
-        }
+	if (strcmp(command, "dorm-print-all-detail") == 0) {
+		print_detailed_dorms(repo->dorms, repo->num_dorms);
+		return;
+	}
 
-        else if ( strcmp(line, "dorm-print-all-detail") == 0 ) {
-            for (short i=0; i<totalDorm; i++) {
-                printDormDetails(dorms[i]);
-            }
-        }
+	if (strcmp(command, "student-print-all-detail") == 0) {
+		print_detailed_students(repo->students, repo->num_students);
+		return;
+	}
 
-        else {
-            char *token = strtok(line, delim);
+	if (strcmp(command, "dorm-add") == 0) {
+		char* name = strtok(NULL, DELIMITER);
+		char* capacity_str = strtok(NULL, DELIMITER);
+		char* gender_str = strtok(NULL, DELIMITER);
 
-            if ( strcmp(token, "student-add") == 0 ) {
-                token = strtok(NULL, delim); char *_id = token;
-                token = strtok(NULL, delim); char *_name = token;
-                token = strtok(NULL, delim); char *_year = token;
-                
-                token = strtok(NULL, delim);
-                if ( totalStudent > 0 ) {
-                    students = (Student*) realloc(students, (totalStudent+1) * sizeof(Student));
-                }
-                if ( strcmp(token, "male") == 0 ) {
-                    students[totalStudent] = create_student(_id, _name, _year, GENDER_MALE);
-                    totalStudent++;
-                }
-                else if ( strcmp(token, "female") == 0 ) {
-                    students[totalStudent] = create_student(_id, _name, _year, GENDER_FEMALE);
-                    totalStudent++;
-                }
-            }
+		if (name && capacity_str && gender_str) {
+			unsigned short capacity = (unsigned short) atoi(capacity_str);
+			Dorm dorm = new_dorm(name, capacity, gender_str);
+			add_dorm(repo, dorm);
+		}
+		return;
+	}
+	
+	if (strcmp(command, "student-add") == 0) {
+		char *id = strtok(NULL, DELIMITER);
+		char *name = strtok(NULL, DELIMITER);
+		char *cohort_str = strtok(NULL, DELIMITER);
+		char *gender_str = strtok(NULL, DELIMITER);
 
-            else if ( strcmp(token, "dorm-add") == 0 ) {
-                token = strtok(NULL, delim); char *_name = token;
-                token = strtok(NULL, delim); unsigned short _capacity = atoi(token);
-                token = strtok(NULL, delim);
-                if ( totalDorm > 0 ) {
-                    dorms = (Dorm*) realloc(dorms, (totalDorm+1) * sizeof(Dorm));
-                }
-                if ( strcmp(token, "male") == 0 ) {
-                    dorms[totalDorm] = create_dorm(_name, _capacity, GENDER_MALE);
-                    totalDorm++;
-                }
-                else if ( strcmp(token, "female") == 0 ) {
-                    dorms[totalDorm] = create_dorm(_name, _capacity, GENDER_FEMALE);
-                    totalDorm++;
-                }
-            }
+		if (id && name && cohort_str && gender_str) {
+			unsigned short cohort = (unsigned short) atoi(cohort_str);
+			Student student = new_student(id, name, cohort, strto_gender(gender_str), NULL);
+			add_student(repo, student);
+		}
+		return;
+	}
 
-            else if ( strcmp(token, "assign-student") == 0 ) {
-                token = strtok(NULL, delim); char *_id = token;
-                token = strtok(NULL, delim); char *dorm_name = token;
+	if (strcmp(command, "assign-student") == 0) {
+		char *student_id = strtok(NULL, DELIMITER);
+		char *dorm_name = strtok(NULL, DELIMITER);
 
-                short studentIdx = findStudentIdx(_id, students, totalStudent);
-                short dormIdx = findDormIdx(dorm_name, dorms, totalDorm);
-
-                if ( studentIdx>=0 && dormIdx>=0 ) {
-                    assign(&students[studentIdx], &dorms[dormIdx]);
-                }
-            }
-
-            else if ( strcmp(token, "move-student") == 0 ) {
-                token = strtok(NULL, delim); char *_id = token;
-                token = strtok(NULL, delim); char *dorm_name = token;
-
-                short studentIdx = findStudentIdx(_id, students, totalStudent);
-                short newDormIdx = findDormIdx(dorm_name, dorms, totalDorm);
-                char *_name = students[studentIdx].dorm->name;
-                if (_name != NULL) {
-                    short oldDormIdx = findDormIdx( _name, dorms, totalDorm );
-
-                    if ( studentIdx>=0 && newDormIdx>=0 && oldDormIdx>=0 ) {
-                        moveStudent(&students[studentIdx], &dorms[newDormIdx] , &dorms[oldDormIdx]);
-                    }
-                } else {
-                    assign(&students[studentIdx], &dorms[newDormIdx]);
-                }
-            }
-
-            else if ( strcmp(token, "dorm-empty") == 0 ) {
-                token = strtok(NULL, delim);
-                char *dorm_name = token;
-                short target = findDormIdx(dorm_name, dorms, totalDorm);
-                
-                // emptyDorm(&dorms[target], &students, totalStudent);
-
-                for (short i=0; i<totalStudent; i++) {
-                    if (students[i].dorm != NULL) {     /* MENGHINDARI STRING COMPARATION DGN NULL */
-                        if ( strcmp(students[i].dorm->name, dorm_name) == 0 ) {
-                            unassign(&students[i], &dorms[target]);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    return 0;  
+		if (student_id && dorm_name) {
+			assign_student(repo, student_id, dorm_name);
+		}
+		return;
+	}
+	
+	puts("Unknown command");
 }
