@@ -10,7 +10,7 @@
 
 short line_count(char* fileName)
 {
-    fileName[strcspn(fileName, "\n")] = 0;
+    fileName[strcspn(fileName, "\n")] = 0; 
     FILE *ptr = fopen(fileName,"r");
     short counter = 0;
     char chr = getc(ptr);

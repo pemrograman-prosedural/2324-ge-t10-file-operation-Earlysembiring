@@ -10,7 +10,7 @@
 
 Student create_student ( char *_id, char *_name, char *_year, gender_t _gender )
 {
-    Student student_;
+    Student student_; 
 
     strcpy( student_.id, _id );
     strcpy( student_.name, _name );

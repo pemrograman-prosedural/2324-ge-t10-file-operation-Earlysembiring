@@ -10,7 +10,7 @@
  *
  */
 
-typedef struct student_t
+typedef struct student_t 
 {
     char id[12];
     char name[40];

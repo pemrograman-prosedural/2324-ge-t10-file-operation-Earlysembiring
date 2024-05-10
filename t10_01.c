@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string.h> 
 #define SIZE 256
 #define DELIMITER "#"
 
@@ -27,7 +27,7 @@ int main(void) {
 	char query[SIZE];
 	while (fgets(query, SIZE, stdin)) {
 		sanitize(query);
-		process_query(query, repo);  
+		process_query(query, repo);
 	}
 
 	destroy_repo(repo);

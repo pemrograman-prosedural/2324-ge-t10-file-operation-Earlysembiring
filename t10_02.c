@@ -1,7 +1,6 @@
 // 12S23018 - Early Sembiring
 // 12S23027 - Amos Manurung
 
-
 #include "./libs/repository.h"
 
 #include <stdio.h>
