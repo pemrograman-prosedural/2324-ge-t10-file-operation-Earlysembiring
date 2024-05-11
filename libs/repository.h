@@ -15,7 +15,7 @@ typedef struct {
 	Dorm* dorms;
 	unsigned short num_dorms;
 	Student* students;
-	unsigned short num_students;
+	unsigned short num_students; 
 } Repository;
 
 void init_repo(Repository *repo);

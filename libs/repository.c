@@ -59,31 +59,24 @@ void assign_student(Repository *repo, const char *student_id, const char *dorm_n
 	Student *student = NULL;
 	Dorm *dorm = NULL;
 
-	puts("finding student on assign_student");
 	for (int i = 0; i < repo->num_students; i++) {
 		if (strcmp(repo->students[i].id, student_id) == 0) {
 			student = &repo->students[i];
-			puts("student found on assign_student");
 			break;
 		}
 	}
 
-	puts("finding dorm on assign_student");
 	for (int i = 0; i < repo->num_dorms; i++) {
 		if (strcmp(repo->dorms[i].name, dorm_name) == 0) {
 			dorm = &repo->dorms[i];
-			puts("dorm found on assign_student");
 			break;
 		}
 	}
 
 	if (student && dorm) {
-		puts("student and dorm found on assign_student");
 		if (dorm->gender == student->gender && dorm->capacity > dorm->num_residents) {
-			puts("required conditions met on assign_student");
 			student->dorm = dorm;
 			dorm->num_residents++;
-			printf("on assign_student, student.dorm.name [%s]\n", student->dorm->name);
 		}
 	}
 }
@@ -93,49 +86,26 @@ void move_student(Repository *repo, const char *student_id, const char *dorm_nam
 	Dorm *old_dorm = NULL;
 	Dorm *new_dorm = NULL;
 
-	puts("FINDING STUDENT");
 	for (int i = 0; i < repo->num_students; i++) {
 		if (strcmp(repo->students[i].id, student_id) == 0) {
 			student = &repo->students[i];
-			puts("STUDENT FOUND");
+			old_dorm = student->dorm;
 			break;
 		}
 	}
 
-	puts("FINDING OLD DORM");
-	printf("student.name: [%s]\n", student->name);
-	printf("student.dorm.name: [%s]\n", student->dorm->name);
-	for (int i = 0; i < repo->num_dorms; i++) {
-		printf("finding old_dorm: [%d]\n", i);
-		if (strcmp(repo->dorms[i].name, student->dorm->name) == 0) {
-			old_dorm = &repo->dorms[i];
-			puts("OLD DORM FOUND");
-			break;
-		}
-		puts("not match");
-	}
-
-	puts("FINDING NEW DORM");
 	for (int i = 0; i < repo->num_dorms; i++) {
 		if (strcmp(repo->dorms[i].name, dorm_name) == 0) {
 			new_dorm = &repo->dorms[i];
-			puts("NEW DORM FOUND");
 			break;
 		}
 	}
 
 	if (student && old_dorm && new_dorm) {
-		puts("ALL FOUND");
 		if (new_dorm->gender == student->gender && new_dorm->capacity > new_dorm->num_residents) {
-			puts("REQUIRED CONDITIONS MET");
-
-			puts("decrementing old dorm");
-			old_dorm->num_residents--;
-			puts("incrementing new dorm");
-			new_dorm->num_residents++;
-			puts("assigning new dorm to student");
 			student->dorm = new_dorm;
-			puts("ASSIGNED");
+			old_dorm->num_residents--;
+			new_dorm->num_residents++;
 		}
 	}
 }
@@ -210,3 +180,4 @@ void print_detailed_students(Student *students, unsigned short num_students) {
 		print_student_detailed(&students[i]);
 	}
 }
+ 

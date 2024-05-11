@@ -1,13 +1,12 @@
 // 12S23018 - Early Sembiring
 // 12S23027 - Amos Manurung
-
 #include "./libs/repository.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define SIZE 256
-#define DELIMITER "#"
+#define SIZE 256 
+#define DELIMITER "#" 
 
 void sanitize(char *str);
 void process_query(char *query, Repository *repo);
@@ -30,7 +29,7 @@ int main(void) {
 		process_query(query, repo);
 	}
 
-	destroy_repo(repo);
+	destroy_repo(repo); 
 
 	return 0;
 }
@@ -103,20 +102,15 @@ void process_query(char *query, Repository *repo) {
 		if (student_id && dorm_name) {
 			assign_student(repo, student_id, dorm_name);
 		}
-		return;  
+		return;
 	}
 
 	if (strcmp(command, "move-student") == 0) {
-		puts("MOVING STUDENT");
 		char *student_id = strtok(NULL, DELIMITER);
-		printf("student_id:{%s}\n", student_id);
 		char *dorm_name = strtok(NULL, DELIMITER);
-		printf("dorm_name:{%s}\n", dorm_name);
 
 		if (student_id && dorm_name) {
-			puts("BOTH ARE VALID");
 			move_student(repo, student_id, dorm_name);
-			puts("MOVED :D");
 		}
 		return;
 	}

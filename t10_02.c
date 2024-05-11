@@ -8,7 +8,7 @@
 #include <string.h>
 #define SIZE 256
 #define DELIMITER "#"
-
+ 
 void sanitize(char *str);
 void process_query(char *query, Repository *repo);
 
@@ -67,7 +67,7 @@ void process_query(char *query, Repository *repo) {
 	if (strcmp(command, "student-print-all-detail") == 0) {
 		print_detailed_students(repo->students, repo->num_students);
 		return;
-	}
+	} 
 
 	if (strcmp(command, "dorm-add") == 0) {
 		char* name = strtok(NULL, DELIMITER);
