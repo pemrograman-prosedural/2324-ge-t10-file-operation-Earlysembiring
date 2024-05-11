@@ -103,6 +103,21 @@ void process_query(char *query, Repository *repo) {
 		if (student_id && dorm_name) {
 			assign_student(repo, student_id, dorm_name);
 		}
+		return;  
+	}
+
+	if (strcmp(command, "move-student") == 0) {
+		puts("MOVING STUDENT");
+		char *student_id = strtok(NULL, DELIMITER);
+		printf("student_id:{%s}\n", student_id);
+		char *dorm_name = strtok(NULL, DELIMITER);
+		printf("dorm_name:{%s}\n", dorm_name);
+
+		if (student_id && dorm_name) {
+			puts("BOTH ARE VALID");
+			move_student(repo, student_id, dorm_name);
+			puts("MOVED :D");
+		}
 		return;
 	}
 	

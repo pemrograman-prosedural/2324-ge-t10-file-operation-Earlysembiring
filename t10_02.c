@@ -92,8 +92,8 @@ void process_query(char *query, Repository *repo) {
 			unsigned short cohort = (unsigned short) atoi(cohort_str);
 			Student student = new_student(id, name, cohort, strto_gender(gender_str), NULL);
 			add_student(repo, student);
-		}
-		return;
+		} 
+		return; 
 	}
 
 	if (strcmp(command, "assign-student") == 0) {
@@ -102,6 +102,16 @@ void process_query(char *query, Repository *repo) {
 
 		if (student_id && dorm_name) {
 			assign_student(repo, student_id, dorm_name);
+		}
+		return;
+	}
+
+	if (strcmp(command, "move-student") == 0) {
+		char *student_id = strtok(NULL, DELIMITER);
+		char *dorm_name = strtok(NULL, DELIMITER);
+
+		if (student_id && dorm_name) {
+			move_student(repo, student_id, dorm_name);
 		}
 		return;
 	}
