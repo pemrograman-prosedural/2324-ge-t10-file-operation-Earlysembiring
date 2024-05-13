@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define SIZE 256
-#define DELIMITER "#"
+#define DELIMITER "#" 
  
 void sanitize(char *str);
 void process_query(char *query, Repository *repo);

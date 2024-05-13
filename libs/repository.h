@@ -15,7 +15,7 @@ typedef struct {
 	Dorm* dorms;
 	unsigned short num_dorms;
 	Student* students;
-	unsigned short num_students; 
+	unsigned short num_students;
 } Repository;
 
 void init_repo(Repository *repo);
@@ -31,4 +31,4 @@ void print_students(Student *students, unsigned short num_students);
 void print_detailed_dorms(Dorm *dorms, unsigned short num_dorms);
 void print_detailed_students(Student *students, unsigned short num_students);
 
-#endif
+#endif 

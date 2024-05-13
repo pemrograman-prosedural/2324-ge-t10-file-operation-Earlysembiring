@@ -154,7 +154,7 @@ void load_students(Repository *repo, const char *filename) {
 			add_student(repo, student);
 		}
 	}
-	fclose(file);
+	fclose(file); 
 }
 
 void print_dorms(Dorm *dorms, unsigned short num_dorms) {
